@@ -1,6 +1,6 @@
 package objectsandclasses
 
-class Film(name: String, yearOfRelease: Int, imdbRating: Double, val director: Director){
+class Film(val name: String, val yearOfRelease: Int, val imdbRating: Double, val director: Director){
   def directorsAge() = yearOfRelease - director.yearOfBirth
 
   def isDirectedBy(director: Director) = director.equals(this.director)
@@ -16,8 +16,19 @@ class Film(name: String, yearOfRelease: Int, imdbRating: Double, val director: D
   override def toString: String = s"Film($name,$yearOfRelease,$imdbRating,$director)"
 }
 
-class Director(firstName: String, lastName: String, val yearOfBirth: Int){
-  def name = s"$firstName $lastName"
+object Film{
+  def apply(name: String, yearOfRelease: Int, imdbRating: Double, director: Director) =
+    new Film(name, yearOfRelease, imdbRating, director)
 
-  override def toString: String = s"Director($firstName,$lastName,$yearOfBirth)"
+  def highestRating(filmOne: Film, filmTwo: Film): Film =
+    if(filmOne.imdbRating > filmTwo.imdbRating)
+      filmOne
+    else
+      filmTwo
+
+  def oldestDirectorAtTheTime(filmOne: Film, filmTwo: Film): Director =
+    if(filmOne.directorsAge() > filmTwo.directorsAge())
+      filmOne.director
+    else
+      filmTwo.director
 }
