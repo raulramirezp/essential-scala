@@ -47,21 +47,36 @@ to know which parts refer to a class or type and which parts refer to a singleto
 object or value.
  */
 
-// Exercises
+/* *****************************************
+*                  Exercises
+***************************************** */
 
 // Friendly Person Factory
 // type
 class Person(val firstName: String, val lastName: String){
+  import Person.fieldOnObject
+  val anotherField = "Another field in the class"
   override def toString: String = s"Person($firstName,$lastName)"
+  def showName(): Unit = println(s"Name is: ${firstName}")
+
+  def showValuesInObject(): Unit = println(s"field on object from class: ${fieldOnObject}")
 }
 
 //value - singleton
 object Person{
+  val fieldOnObject = "Value in object"
   def apply(fullName: String): Person = {
     val name = fullName.split(" ")
     new Person(name(0), name(1))
   }
+
+  def showMessage(): Unit = println(s"Can't access to non-static members")
 }
 
 val person = Person("Raul Ramirez")
 println(person)
+// object
+Person.showMessage()
+// class
+person.showName()
+person.showValuesInObject()
