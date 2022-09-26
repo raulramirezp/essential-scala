@@ -8,7 +8,7 @@ object Draw {
   }
 
   def colorOfShape(color: Color): String = color match {
-    case Red() | Yellow() | Pink() => s"${color.name} "
+    case Red | Yellow | Pink => s"${color.name} "
     case Custom(_, _, _) => ""
   }
 }
