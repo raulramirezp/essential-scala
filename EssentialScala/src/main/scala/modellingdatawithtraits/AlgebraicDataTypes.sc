@@ -96,3 +96,33 @@ trait Bottled{
 }
 
 final case class BottledWater(size: Int, source: Source, carbonated: Boolean) extends Bottled
+
+// structural recursion
+
+// Using polymorphism
+sealed trait TrafficLight{
+  def next(): TrafficLight
+}
+case object Red extends TrafficLight{
+  def next(): TrafficLight = Green
+}
+case object Green extends TrafficLight{
+  def next(): TrafficLight = Yellow
+}
+case object Yellow extends TrafficLight{
+  def next(): TrafficLight = Red
+}
+
+// Patern matching
+sealed trait TrafficLight
+case object Red extends TrafficLight
+case object Green extends TrafficLight
+case object Yellow extends TrafficLight
+
+object Traffic{
+  def next(trafficLight: TrafficLight): TrafficLight = trafficLight match {
+    case Green => Yellow
+    case Yellow => Red
+    case Red => Green
+  }
+}
