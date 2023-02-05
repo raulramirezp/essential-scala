@@ -85,3 +85,7 @@ println(rectangle.color.tone)
 
 println(rectangleCustomRed.color.name)
 println(rectangleCustomRed.color.tone)
+
+sealed abstract class Animal(val name: String)
+
+case class Cat(age: Int, override val name: String) extends Animal(name)

@@ -1,5 +1,5 @@
 import scala.annotation.tailrec
-
+import sequencingcomputations._
 //Pandora's Box
 // The syntax [A] is called a type parameter.
 final case class Box[A](value: A)
@@ -12,9 +12,6 @@ def genericFunction[B](input: B): B = input
 genericFunction(1)
 genericFunction(Box("pandora"))
 
-sealed trait Result[A]
-final case class Success[A](value: A) extends Result[A]
-final case class Failure[A](reason: String) extends Result[A]
 
 /*
  Invariant Generic Sum Type Pattern
@@ -61,6 +58,22 @@ sealed trait LinkedList[A] {
       else tail(index-1)
   }
 
+/*  def map[U](operation: A => U): LinkedList[U] =
+    this match {
+      case End() => End[U]()
+      case Pair(head, tail) => Pair(operation(head), tail.map(operation))
+    }*/
+
+  def map[U](operation: A => U): LinkedList[U] =
+    foldRight[LinkedList[U]](End[U](), (a,b) => Pair(operation(a), b))
+
+  //def double: LinkedList[A] = foldRight(End(), (hd, tl) => Pair(hd * 2, tl))
+  def foldRight[U](base: U, operation: (A, U) => U): U =
+    this match {
+      case End() => base
+      case Pair(head, tail) => operation(head, tail.foldRight(base,operation))
+    }
+
 }
 final case class End[A]() extends LinkedList[A]
 final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A] {}
@@ -82,9 +95,14 @@ example.contains(6)
 // example.contains("not an Int")
 
 // Implement  a method apply that returns the nth item in the list
-val example = Pair(1, Pair(2, Pair(3, End())))
-assert(example(0) == Success(1))
+val example = Pair(5, Pair(2, Pair(3, End())))
+assert(example(0) == Success(5))
 assert(example(1) == Success(2))
 assert(example(2) == Success(3))
 assert(example(3) == Failure("Index out of bounds"))
 example(3)
+example.foldRight[Int](0, _ + _)
+println(s"Mapping ${example.map(_.toString.concat(" number"))}")
+
+
+
