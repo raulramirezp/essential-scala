@@ -42,3 +42,19 @@ println(s"Length ${example.length}")
 println(s"sum ${example.sum}")
 println(s"product ${example.product}")
 println(s"double ${example.double}")
+
+
+// Methods to Functions
+// Using placeholders annotation
+object Sum{
+  def sum(a: Int, b: Int): Int = a + b
+}
+
+Sum.sum _ // Return a (Int, Int) => Int function
+
+case class Double(value: Int){
+  def apply(fun: (Int, Int) => Int): Int =
+    fun(value, value)
+}
+
+Double(5).apply(Sum.sum) //Infers the transformation from method to function

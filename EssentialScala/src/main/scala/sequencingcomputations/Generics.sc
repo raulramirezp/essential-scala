@@ -65,13 +65,13 @@ sealed trait LinkedList[A] {
     }*/
 
   def map[U](operation: A => U): LinkedList[U] =
-    foldRight[LinkedList[U]](End[U](), (a,b) => Pair(operation(a), b))
+    foldRight[LinkedList[U]](End[U]())( (a,b) => Pair(operation(a), b))
 
   //def double: LinkedList[A] = foldRight(End(), (hd, tl) => Pair(hd * 2, tl))
-  def foldRight[U](base: U, operation: (A, U) => U): U =
+  def foldRight[U](base: U)(operation: (A, U) => U): U =
     this match {
       case End() => base
-      case Pair(head, tail) => operation(head, tail.foldRight(base,operation))
+      case Pair(head, tail) => operation(head, tail.foldRight(base)(operation))
     }
 
 }
@@ -101,7 +101,7 @@ assert(example(1) == Success(2))
 assert(example(2) == Success(3))
 assert(example(3) == Failure("Index out of bounds"))
 example(3)
-example.foldRight[Int](0, _ + _)
+example.foldRight[Int](0)(_ + _)
 println(s"Mapping ${example.map(_.toString.concat(" number"))}")
 
 
