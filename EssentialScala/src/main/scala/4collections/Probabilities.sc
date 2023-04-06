@@ -88,17 +88,17 @@ val model: Distribution[(Food, Cat)] = for {
     case ReadyToEatWithSmell => catEventsIfFoodSmell
     case RawWithoutSmell => catEventsIfFoodNotSmell
   }
-} yield (p1,p2)
+} yield (p1, p2)
 
-val generalProbCatComesToHarass = model.events.filter{
-  case ((_, cat),_) if cat == CatComesToHarass => true
+val generalProbCatComesToHarass = model.events.filter {
+  case ((_, cat), _) if cat == CatComesToHarass => true
   case _ => false
-}.map{case (_, p) => p}.sum
+}.map { case (_, p) => p }.sum
 
 val probCatHarassWhenFoodSmell =
   model.events.find {
     case ((food, cat), _) if food == ReadyToEatWithSmell && cat == CatComesToHarass => true
-  }.map{case (pair, probability) => probability/generalProbCatComesToHarass}
+  }.map { case (pair, probability) => probability / generalProbCatComesToHarass }
 
 /*
 sealed trait Food

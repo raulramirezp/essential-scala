@@ -7,7 +7,8 @@ sealed trait Color {
   def name: String
   def tone: String = (red, green, blue) match {
     case (0, _, _) | (_, 0, _) | (_, _, 0) => "Dark"
-    case (red, green, blue) if red <= 128 && green <= 128 && blue <= 128 => "Dark"
+    case (red, green, blue) if red <= 128 && green <= 128 && blue <= 128 =>
+      "Dark"
     case _ => "light"
   }
 }
