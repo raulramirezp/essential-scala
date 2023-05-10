@@ -11,6 +11,10 @@ List(1,2) ::: List(3,4)
 val emptyList = Nil
 val list2 = 1 :: 2 :: 3 :: 4 :: Nil
 
+emptyList match {
+  case Nil => println("Empty")
+  case list => println(list)
+}
 val animals = Seq("cat", "dog", "penguin")
 "mouse" +: animals :+ "tyrannosaurus"
 1 +: animals

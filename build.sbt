@@ -18,7 +18,11 @@ lazy val root = (project in file("."))
     essential_scala_module
   )
 
-lazy val scala_with_cats_module = project in file("ScalaWithCats")
+lazy val scala_with_cats_module = (project in file("ScalaWithCats"))
+  .settings(
+    libraryDependencies ++= commonDependencies,
+    libraryDependencies += "org.typelevel" %% "cats-core" % "2.9.0"
+  )
 
 lazy val essential_scala_module = (project in file("EssentialScala"))
   .settings(
