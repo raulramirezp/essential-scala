@@ -14,7 +14,7 @@ object PrintableMain extends App {
   val mauricio: Cat = Cat("Mauricio", 2, "black")
   val cat = Cat("Garfield", 41, "ginger and black")
   Printable.print(mauricio)
-
+   
   cat.format
   cat.print
 }
