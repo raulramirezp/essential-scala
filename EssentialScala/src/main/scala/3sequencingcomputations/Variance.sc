@@ -157,6 +157,19 @@ def groom(groomer: Cat => CatSound): CatSound = {
   groomer(oswald)
 }
 
+let
+A = Animal => Cat
+B = Purr => CatSound
+
+Given
+If A2 <: A1 and B1 <: B2, then
+A1 => B1 <: A2 => B2
+
+if
+Cat <: Animal ? Yes
+Purr <: CatSound? Yes
+
+Then
 Animal => Purr
 
  which of the following can I pass to groom?

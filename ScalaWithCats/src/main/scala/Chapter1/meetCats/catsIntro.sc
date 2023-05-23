@@ -45,3 +45,27 @@ implicitly(Eq[Int])
 
 Option(1) === Option.empty[Int]
 1.some =!= none[Int]
+
+implicit val dateEq: Eq[Date] = Eq.instance((date1, date2) =>
+  date1.getTime === date2.getTime)
+
+val x = new Date() // now
+val y = new Date()
+
+x === x
+x === y
+
+// Exercise
+implicit val catEq: Eq[Cat] = Eq.instance{(cat1, cat2) =>
+  cat1.name === cat2.name &&
+    cat1.age == cat2.age &&
+    cat1.color === cat2.color
+}
+
+val cat1 = Cat("Garfield",   38, "orange and black")
+val cat2 = Cat("Heathcliff", 33, "orange and black")
+val optionCat1 = Option(cat1)
+val optionCat2 = Option.empty[Cat]
+
+cat1 === cat2
+optionCat1 === optionCat2
