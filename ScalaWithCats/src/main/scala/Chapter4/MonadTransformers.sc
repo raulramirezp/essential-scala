@@ -72,3 +72,50 @@ val result1 = addAll("1", "2", "3")
 val result2 = addAll("1", "a", "3")
 
 // Exercise: Monads: Transform and Roll Out
+
+val powerLevels = Map(
+  "Jazz"      -> 6,
+  "Bumblebee" -> 8,
+  "Hot Rod"   -> 10
+)
+//type Response[A] = Future[Either[String, A]]
+type Response[A] = EitherT[Future, String, A]
+
+def getPowerLevel(ally: String): Response[Int] =
+  powerLevels.get(ally) match {
+    case Some(value) => value.pure[Response]
+    case None => EitherT.left(Future(s"$ally unreachable"))
+  }
+
+getPowerLevel("mauro")
+getPowerLevel("Bumblebee")
+
+def canSpecialMove(ally1: String, ally2: String): Response[Boolean] =
+  for {
+    first <- getPowerLevel(ally1)
+    second <- getPowerLevel(ally2)
+  } yield (first + second) > 15
+
+
+val res = canSpecialMove("mauro", "raul")
+val nonSpecialMove = canSpecialMove("Bumblebee", "Jazz")
+val specialMove = canSpecialMove("Hot Rod", "Jazz")
+
+Thread.sleep(100)
+println(res)
+println(nonSpecialMove)
+println(specialMove)
+
+def tacticalReport(ally1: String, ally2: String): String = {
+  val stack: Future[Either[String, Boolean]] = canSpecialMove(ally1, ally2).value
+
+  Await.result(stack, Duration(1, SECONDS)) match {
+    case Left(errorMsg) => errorMsg
+    case Right(true) => s"$ally1 and $ally2 are ready to roll out!"
+    case Right(false) => s"$ally1 and $ally2 need a recharge."
+  }
+}
+
+tacticalReport("Jazz", "Bumblebee")
+tacticalReport("Bumblebee", "Hot Rod")
+tacticalReport("Jazz", "Ironhide")
