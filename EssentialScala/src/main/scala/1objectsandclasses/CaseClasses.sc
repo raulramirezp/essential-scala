@@ -30,7 +30,7 @@ println(dave)
 Person("Dave", "Gurnell").equals(dave)
 Person("Dave", "Gurnell") == dave
 Person("Raul", "Gurnell") == dave
-Person("Raul", "Gurnell") eq dave // false
+Person("Dave", "Gurnell") eq dave // false
 
 // 4. A copy method that creates a new object with the same field values as the current one:
 dave.copy(lastName = "Ramirez")

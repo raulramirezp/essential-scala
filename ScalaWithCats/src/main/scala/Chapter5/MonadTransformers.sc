@@ -1,7 +1,15 @@
-import cats.data.{ EitherT, OptionT }
+import cats.data.{EitherT, OptionT}
 import cats.implicits.catsSyntaxApplicativeId
-import scala.concurrent.Future
 
+import scala.concurrent
+import scala.concurrent.Future
+import scala.util.Failure
+
+/**
+ * We can now reveal that Kleisli and ReaderT are, in fact,
+ * the same thing! ReaderT is actually a type alias for Kleisli.
+ * Hence, we were creating Readers last chapter and seeing Kleislis on the console.
+ **/
 type ListOption[A] = OptionT[List, A]
 
 val result1: ListOption[Int] = OptionT(List(Option(2)))
@@ -21,6 +29,35 @@ import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import cats.syntax.either._
+
+def saveOrUpdate(): Future[Int] = Future{
+  val r = scala.util.Random
+  val randomSleepTime = r.nextInt(3000)
+  println(s"Sleep for saveOrUpdate is $randomSleepTime")
+  Thread.sleep(randomSleepTime)
+  randomSleepTime
+}
+
+
+val eitherT: EitherT[Future, String, Int] =
+  EitherT.right(saveOrUpdate())
+
+val eitherTWithFailure: EitherT[Future, String, Int] =
+  EitherT.right(Future.failed(new Exception("Fail to connect with DB")))
+
+val futureValue: Future[Either[String, Int]] =
+  eitherTWithFailure
+    .value
+    .recoverWith(error => Future{
+      println(s"Future fail with $error")
+      Either.right(0)
+    })
+
+
+Await.result(futureValue, Duration(1, SECONDS)) match {
+  case Right(value) => println(s"Success $value")
+  case Left(value) => println(s"Error: $value")
+}
 
 /**
  * For example, let’s create a Future of an Either of Option.
