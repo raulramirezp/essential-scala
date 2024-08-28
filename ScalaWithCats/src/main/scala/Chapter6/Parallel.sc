@@ -7,7 +7,7 @@ However it’s not always what we want.
 The Parallel type class, and its associated syntax, allows us to access alternate semantics for certain monads.
  */
 
-import cats.Semigroupal
+import cats.{NonEmptyParallel, Semigroupal}
 import cats.arrow.FunctionK
 import cats.implicits.catsSyntaxTuple2Semigroupal
 import cats.syntax.parallel._ // for parTupled
@@ -24,6 +24,7 @@ Semigroupal[ErrorOr].product(error1, error2)
 
 
 (error1, error2).parTupled
+implicitly(NonEmptyParallel)
 
 val success1: ErrorOr[Int] = Right(1)
 val success2: ErrorOr[Int] = Right(2)
