@@ -1,4 +1,4 @@
-package ActorModelAndActorSystem
+package akka.example.helloworld
 
 import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors

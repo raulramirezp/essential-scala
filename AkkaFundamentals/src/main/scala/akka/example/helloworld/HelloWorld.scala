@@ -1,7 +1,7 @@
-package ActorModelAndActorSystem
-import akka.actor.typed.ActorRef
-import akka.actor.typed.Behavior
+package akka.example.helloworld
+
 import akka.actor.typed.scaladsl.Behaviors
+import akka.actor.typed.{ActorRef, Behavior}
 
 object HelloWorld {
   final case class Greet(whom: String, replyTo: ActorRef[Greeted])

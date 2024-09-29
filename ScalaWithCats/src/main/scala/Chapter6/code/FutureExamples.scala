@@ -67,7 +67,6 @@ object FutureExamples extends App {
   )
 
   println(s"The result is $resultUsingTuple")
-
  /* println("--------- Future with mapN: Parallel ---------")
   val resultTaskMapN = Await.result(
     Task

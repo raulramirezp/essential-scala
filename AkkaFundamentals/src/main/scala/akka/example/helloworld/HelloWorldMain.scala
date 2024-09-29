@@ -1,7 +1,7 @@
-package ActorModelAndActorSystem
+package akka.example.helloworld
 
-import akka.actor.typed.{ActorSystem, Behavior}
 import akka.actor.typed.scaladsl.Behaviors
+import akka.actor.typed.{ActorSystem, Behavior}
 
 object HelloWorldMain extends App {
 
